@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 const ADD = 'redux-rxjs-katas/counter/ADD';
 const ASYNC_ADD = 'redux-rxjs-katas/counter/ASYNC_ADD';
 const ASYNC_ADD_SUCCESS = 'redux-rxjs-katas/counter/ASYNC_ADD_SUCCESS';
+const ASYNC_ADD_FAIL = 'redux-rxjs-katas/counter/ASYNC_ADD_FAIL';
 const ASYNC_ADD_CANCELLED = 'redux-rxjs-katas/counter/ASYNC_ADD_CANCELLED';
 
 const initialState = fromJS({
@@ -50,6 +51,6 @@ export function asyncAddEpic(action$) {
       }))
       .map((action) => ({type: ASYNC_ADD_SUCCESS, value: action.value}))
       .takeUntil(action$.ofType(ASYNC_ADD_CANCELLED))
-      .catch((err) => console.error('err', err));
+      .catch((err) => Observable.of({type: ASYNC_ADD_FAIL}));
     });
 }
